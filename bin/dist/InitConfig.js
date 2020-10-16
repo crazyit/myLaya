@@ -132,5 +132,6 @@ class InitConfig {}
 
 exports.default = InitConfig;
 InitConfig.resPrefixPath = "res/ui/";
+InitConfig.isDebug = true;
 },{}]},{},["InitConfig.ts"], null)
 //# sourceMappingURL=/InitConfig.js.map

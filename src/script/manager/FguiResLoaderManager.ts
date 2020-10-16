@@ -30,9 +30,17 @@ export default class FguiResLoaderManager {
         if (progress) {
             progress.once = false;
         }
-        let loadData: Array<any> = [
-            { url: resKey + "." + fgui.UIConfig.packageFileExtension, type: Laya.Loader.BUFFER }
-        ]
+        let loadData: Array<any> = [];
+        if(resKey && resKey instanceof Array){
+            resKey.forEach(element => {
+                loadData.push({ url: element + "." + fgui.UIConfig.packageFileExtension, type: Laya.Loader.BUFFER });
+            });
+        }else{
+            if(resKey){
+                loadData.push({ url: resKey + "." + fgui.UIConfig.packageFileExtension, type: Laya.Loader.BUFFER });
+            }
+        }
+
         Laya.loader.load(loadData, Laya.Handler.create(this, this.onLoadPackageComplete, [resKey, otherLoadData, complete, progress]),Laya.Handler.create(this, this.onLoadPackageProgress, [resKey, progress]));
     }
     private onLoadPackageProgress(progressNum:number,resKey: string, progress?: Laya.Handler){

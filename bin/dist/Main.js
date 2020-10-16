@@ -547,6 +547,7 @@ class InitConfig {}
 
 exports.default = InitConfig;
 InitConfig.resPrefixPath = "res/ui/";
+InitConfig.isDebug = true;
 },{}],"script/ui/AbsBaseView.ts":[function(require,module,exports) {
 "use strict";
 
@@ -707,9 +708,11 @@ exports.net = net;
     constructor() {
       this.ProtoBuf = Browser.window.protobuf;
       this.ProtoBuf.load("res/protobuf/awesome.proto", this.onAssetsLoaded);
+      console.log("Network_ProtocolBuffer  constructor()");
     }
 
     onAssetsLoaded(err, root) {
+      console.log("Network_ProtocolBuffer onAssetsLoaded" + err);
       if (err) throw err; // Obtain a message type
 
       var AwesomeMessage = root.lookup("awesomepackage.AwesomeMessage"); // Create a new message
@@ -729,7 +732,8 @@ exports.net = net;
       }).finish(); // ... do something with buffer
       // Decode an Uint8Array (browser) or Buffer (node) to a message
 
-      var message = AwesomeMessage.decode(buffer); // ... do something with message
+      var message = AwesomeMessage.decode(buffer);
+      console.log("message = " + message + "" + JSON.stringify(message)); // ... do something with message
       // If your application uses length-delimited buffers, there is also encodeDelimited and decodeDelimited.
     }
 

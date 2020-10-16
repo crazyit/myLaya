@@ -12,10 +12,12 @@ export module net
 		{
 			
 			this.ProtoBuf.load("res/protobuf/awesome.proto", this.onAssetsLoaded);
+			console.log("Network_ProtocolBuffer  constructor()");
 		}
 		
 		private onAssetsLoaded(err:any, root:any):void
 		{
+			console.log("Network_ProtocolBuffer onAssetsLoaded"+err);
 			if (err)
 				throw err;
 
@@ -46,6 +48,7 @@ export module net
 
 			// Decode an Uint8Array (browser) or Buffer (node) to a message
 			var message:any = AwesomeMessage.decode(buffer);
+			console.log("message = "+message+""+JSON.stringify(message));
 			// ... do something with message
 
 			// If your application uses length-delimited buffers, there is also encodeDelimited and decodeDelimited.
