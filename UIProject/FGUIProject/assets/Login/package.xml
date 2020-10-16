@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="3cvazr8p">
+  <resources>
+    <component id="hbx20" name="Component1.xml" path="/" exported="true"/>
+    <component id="mmu21" name="LoginView.xml" path="/" exported="true"/>
+    <image id="h8rr2" name="0.png" path="/images/"/>
+    <image id="h8rr3" name="1.png" path="/images/"/>
+    <image id="h8rr4" name="2.png" path="/images/"/>
+    <image id="h8rr5" name="3.png" path="/images/"/>
+    <image id="h8rr6" name="4.png" path="/images/"/>
+    <image id="h8rr7" name="5.png" path="/images/"/>
+    <image id="h8rr8" name="7.png" path="/images/"/>
+    <image id="h8rr9" name="8.png" path="/images/"/>
+    <image id="h8rra" name="btnimage.png" path="/images/"/>
+    <movieclip id="h8rrb" name="quan.jta" path="/images/"/>
+  </resources>
+  <publish name=""/>
+</packageDescription>
