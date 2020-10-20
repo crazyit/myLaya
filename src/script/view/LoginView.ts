@@ -1,7 +1,7 @@
 
 import { topUi } from "../ui/BaseView";
 import {Game} from "../event/NotificationCenter"
-import {EventSelf} from "../event/Event"
+import * as EventSelf from "../event/Event"
 export module view{
 
     export class LoginView extends topUi.BaseView{
@@ -17,7 +17,7 @@ export module view{
         }
         registerEvent() {
             console.log("loginView registerEvent");
-            Game.NotificationCenter.getInstance().registerEvt(new EventSelf("loginInit",this,this.onLoginInit))
+            Game.NotificationCenter.getInstance().registerEvt(new EventSelf.Game.EventSelf("loginInit",this,this.onLoginInit))
         }
         onLoginInit(arg0:any,arg1:any){
             console.log("reveice loginInit method  arg0="+arg0+"arg1="+arg1);

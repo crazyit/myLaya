@@ -351,13 +351,17 @@
         Game.NotificationCenter = NotificationCenter;
     })(Game || (Game = {}));
 
-    class EventSelf {
-        constructor(evtName, target, callBack) {
-            this.mEvtName = evtName;
-            this.mTarget = target;
-            this.mCallBack = callBack;
+    var Game$1;
+    (function (Game) {
+        class EventSelf {
+            constructor(evtName, target, callBack) {
+                this.mEvtName = evtName;
+                this.mTarget = target;
+                this.mCallBack = callBack;
+            }
         }
-    }
+        Game.EventSelf = EventSelf;
+    })(Game$1 || (Game$1 = {}));
 
     var view;
     (function (view) {
@@ -371,7 +375,7 @@
             }
             registerEvent() {
                 console.log("loginView registerEvent");
-                Game.NotificationCenter.getInstance().registerEvt(new EventSelf("loginInit", this, this.onLoginInit));
+                Game.NotificationCenter.getInstance().registerEvt(new Game$1.EventSelf("loginInit", this, this.onLoginInit));
             }
             onLoginInit(arg0, arg1) {
                 console.log("reveice loginInit method  arg0=" + arg0 + "arg1=" + arg1);
@@ -465,6 +469,30 @@
         net.NetWork = NetWork;
     })(net || (net = {}));
 
+    class InitConfig$1 {
+    }
+    InitConfig$1.resPrefixPath = "res/ui/";
+    InitConfig$1.isDebug = true;
+    InitConfig$1.serverUrl = "ws://echo.websocket.org:80";
+
+    class Log {
+        static warn(params) {
+            if (InitConfig$1.isDebug) {
+                console.warn(params);
+            }
+        }
+        static info(params) {
+            if (InitConfig$1.isDebug) {
+                console.info(params);
+            }
+        }
+        static table(params) {
+            if (InitConfig$1.isDebug) {
+                console.table(params);
+            }
+        }
+    }
+
     class Main {
         constructor() {
             if (window["Laya3D"])
@@ -500,8 +528,7 @@
             });
             console.log("test protocolBuffer");
             net.NetWork.getInstance();
-            let foo = () => {
-            };
+            Log.info("Laya.Browser.clientWidth=" + Laya.Browser.clientWidth + "Laya.Browser.clientHeight=" + Laya.Browser.clientHeight);
         }
     }
     new Main();

@@ -1,5 +1,5 @@
-// export namespace Game
-// {
+export namespace Game
+{
     export class EventSelf{
         public mEvtName:string;
         public mTarget:any;
@@ -11,4 +11,4 @@
             this.mCallBack = callBack;
         }
     }
-// }
+}

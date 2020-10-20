@@ -4,6 +4,7 @@ import { view } from "./script/view/LoginView";
 import "./script/net/NetWork"
 import { net } from "./script/net/NetWork";
 import {Game} from "./script/event/NotificationCenter"
+import { Log } from "./script/util/Log";
 
 class Main {
 	constructor() {
@@ -49,10 +50,8 @@ class Main {
 		})
 		console.log("test protocolBuffer");
 		net.NetWork.getInstance();
-		let foo:Function = ()=>{
 
-		}
-		// foo.call
+		Log.info("Laya.Browser.clientWidth="+Laya.Browser.clientWidth+"Laya.Browser.clientHeight="+Laya.Browser.clientHeight);
 
 	}
 }

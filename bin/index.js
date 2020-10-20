@@ -15,5 +15,5 @@ loadLib("libs/laya.physics.js")
 loadLib("libs/rawinflate.min.js");// 如果勾选了不压缩，这个库不需要
 loadLib("libs/fairygui.js");// 只依赖laya.core,laya.html两个模块
 loadLib("libs/protobuf.js");
-loadLib("js/bundle.js");
-// loadLib("dist/Main.js");
+// loadLib("js/bundle.js");
+loadLib("dist/Main.js");

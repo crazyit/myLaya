@@ -1,4 +1,4 @@
-import {EventSelf} from "./Event"
+import * as GameSpace from "./Event"
 export namespace Game{
     
     export class NotificationCenter{
@@ -7,6 +7,7 @@ export namespace Game{
         private mEvtList:Array<any>;
         private constructor(){
             this.mEvtList = [];
+            
         }
         public static getInstance():NotificationCenter{
             if(!this.instance){
@@ -14,9 +15,10 @@ export namespace Game{
             }
             return this.instance;
         }
-        public registerEvt(evt:EventSelf){
+        
+        public registerEvt(evt:GameSpace.Game.EventSelf){
             if(this.mEvtList[evt.mEvtName]){
-                let evtArr:Array<EventSelf> = this.mEvtList[evt.mEvtName];
+                let evtArr:Array<GameSpace.Game.EventSelf> = this.mEvtList[evt.mEvtName];
                 evtArr.forEach(element => {
                     if(element.mTarget == evt.mTarget){
 
@@ -37,7 +39,7 @@ export namespace Game{
         public unRegisterEvtByTarget(target:any){
             for (const key in this.mEvtList) {
                 if (Object.prototype.hasOwnProperty.call(this.mEvtList, key)) {
-                    let evtArr:Array<EventSelf> = this.mEvtList[key];
+                    let evtArr:Array<GameSpace.Game.EventSelf> = this.mEvtList[key];
                     for (let index = 0; index < evtArr.length; index++) {
                         if(evtArr[index].mTarget == target){
                             this.mEvtList[key][index].splice(index);

@@ -735,21 +735,22 @@ exports.Game = Game;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.EventSelf = void 0;
+exports.Game = void 0;
+var Game;
+exports.Game = Game;
 
-// export namespace Game
-// {
-class EventSelf {
-  constructor(evtName, target, callBack) {
-    this.mEvtName = evtName;
-    this.mTarget = target;
-    this.mCallBack = callBack;
+(function (Game) {
+  class EventSelf {
+    constructor(evtName, target, callBack) {
+      this.mEvtName = evtName;
+      this.mTarget = target;
+      this.mCallBack = callBack;
+    }
+
   }
 
-} // }
-
-
-exports.EventSelf = EventSelf;
+  Game.EventSelf = EventSelf;
+})(Game || (exports.Game = Game = {}));
 },{}],"script/view/LoginView.ts":[function(require,module,exports) {
 "use strict";
 
@@ -762,7 +763,11 @@ var _BaseView = require("../ui/BaseView");
 
 var _NotificationCenter = require("../event/NotificationCenter");
 
-var _Event = require("../event/Event");
+var EventSelf = _interopRequireWildcard(require("../event/Event"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 var view;
 exports.view = view;
@@ -780,7 +785,7 @@ exports.view = view;
     registerEvent() {
       console.log("loginView registerEvent");
 
-      _NotificationCenter.Game.NotificationCenter.getInstance().registerEvt(new _Event.EventSelf("loginInit", this, this.onLoginInit));
+      _NotificationCenter.Game.NotificationCenter.getInstance().registerEvt(new EventSelf.Game.EventSelf("loginInit", this, this.onLoginInit));
     }
 
     onLoginInit(arg0, arg1) {
@@ -819,7 +824,9 @@ exports.net = net;
     constructor() {
       this.mMessage = null;
       let protoBuf = Browser.window.protobuf;
-      protoBuf.load("res/protobuf/awesome.proto", this.onAssetsLoaded);
+      protoBuf.load("res/protobuf/awesome.proto", (err, root) => {
+        this.onAssetsLoaded(err, root);
+      });
       console.log("NetWork  constructor()");
     }
 
@@ -837,8 +844,8 @@ exports.net = net;
       console.log("this=" + this);
       console.log("root=", root); // Obtain a message type
 
-      let msg = root.lookup("awesomepackage.AwesomeMessage");
-      console.log("this.mRootMsg--->>" + msg); // Create a new message
+      this.mMessage = root.lookup("awesomepackage.AwesomeMessage");
+      console.log("this.mMessage--->>" + this.mMessage); // Create a new message
 
       var message = this.mMessage.create({
         awesomeField: "AwesomeString"
@@ -908,7 +915,41 @@ exports.net = net;
 
   net.NetWork = NetWork;
 })(net || (exports.net = net = {}));
-},{}],"Main.ts":[function(require,module,exports) {
+},{}],"script/util/Log.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Log = void 0;
+
+var _InitConfig = _interopRequireDefault(require("../../InitConfig"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+class Log {
+  static warn(params) {
+    if (_InitConfig.default.isDebug) {
+      console.warn(params);
+    }
+  }
+
+  static info(params) {
+    if (_InitConfig.default.isDebug) {
+      console.info(params);
+    }
+  }
+
+  static table(params) {
+    if (_InitConfig.default.isDebug) {
+      console.table(params);
+    }
+  }
+
+}
+
+exports.Log = Log;
+},{"../../InitConfig":"INITConfig.ts"}],"Main.ts":[function(require,module,exports) {
 "use strict";
 
 var _GameConfig = _interopRequireDefault(require("./GameConfig"));
@@ -920,6 +961,8 @@ var _LoginView = require("./script/view/LoginView");
 var _NetWork = require("./script/net/NetWork");
 
 var _NotificationCenter = require("./script/event/NotificationCenter");
+
+var _Log = require("./script/util/Log");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -967,13 +1010,12 @@ class Main {
 
     _NetWork.net.NetWork.getInstance();
 
-    let foo = () => {}; // foo.call
-
+    _Log.Log.info("Laya.Browser.clientWidth=" + Laya.Browser.clientWidth + "Laya.Browser.clientHeight=" + Laya.Browser.clientHeight);
   }
 
 } //激活启动类
 
 
 new Main();
-},{"./GameConfig":"GameConfig.ts","./script/manager/Uimanager":"script/manager/Uimanager.ts","./script/view/LoginView":"script/view/LoginView.ts","./script/net/NetWork":"script/net/NetWork.ts","./script/event/NotificationCenter":"script/event/NotificationCenter.ts"}]},{},["Main.ts"], null)
+},{"./GameConfig":"GameConfig.ts","./script/manager/Uimanager":"script/manager/Uimanager.ts","./script/view/LoginView":"script/view/LoginView.ts","./script/net/NetWork":"script/net/NetWork.ts","./script/event/NotificationCenter":"script/event/NotificationCenter.ts","./script/util/Log":"script/util/Log.ts"}]},{},["Main.ts"], null)
 //# sourceMappingURL=/Main.js.map
