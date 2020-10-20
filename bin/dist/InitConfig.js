@@ -133,5 +133,6 @@ class InitConfig {}
 exports.default = InitConfig;
 InitConfig.resPrefixPath = "res/ui/";
 InitConfig.isDebug = true;
+InitConfig.serverUrl = "ws://echo.websocket.org:80";
 },{}]},{},["InitConfig.ts"], null)
 //# sourceMappingURL=/InitConfig.js.map

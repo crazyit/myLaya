@@ -1,6 +1,6 @@
 import InitConfig from "../../InitConfig";
 
-class Log{
+export class Log{
     
     static warn(params:any) {
         if(InitConfig.isDebug){

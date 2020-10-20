@@ -1,8 +1,10 @@
 import GameConfig from "./GameConfig";
 import { UiManager } from "./script/manager/Uimanager";
 import { view } from "./script/view/LoginView";
-import "./net/Network_ProtocolBuffer"
-import { net } from "./net/Network_ProtocolBuffer";
+import "./script/net/NetWork"
+import { net } from "./script/net/NetWork";
+import {Game} from "./script/event/NotificationCenter"
+
 class Main {
 	constructor() {
 		//根据IDE设置初始化引擎		
@@ -43,9 +45,15 @@ class Main {
 		Laya.timer.once(2000,this,()=>{
 			console.log("1111111111");
 			UiManager.getInstance().closePanel(view.LoginView);
+			Game.NotificationCenter.getInstance().notification("loginInit","111","222");
 		})
 		console.log("test protocolBuffer");
-		new net.Network_ProtocolBuffer();
+		net.NetWork.getInstance();
+		let foo:Function = ()=>{
+
+		}
+		// foo.call
+
 	}
 }
 //激活启动类

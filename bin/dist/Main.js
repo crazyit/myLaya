@@ -548,6 +548,7 @@ class InitConfig {}
 exports.default = InitConfig;
 InitConfig.resPrefixPath = "res/ui/";
 InitConfig.isDebug = true;
+InitConfig.serverUrl = "ws://echo.websocket.org:80";
 },{}],"script/ui/AbsBaseView.ts":[function(require,module,exports) {
 "use strict";
 
@@ -654,7 +655,102 @@ exports.topUi = topUi;
 
   topUi.BaseView = BaseView;
 })(topUi || (exports.topUi = topUi = {}));
-},{"../../INITConfig":"INITConfig.ts","./AbsBaseView":"script/ui/AbsBaseView.ts"}],"script/view/LoginView.ts":[function(require,module,exports) {
+},{"../../INITConfig":"INITConfig.ts","./AbsBaseView":"script/ui/AbsBaseView.ts"}],"script/event/NotificationCenter.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Game = void 0;
+var Game;
+exports.Game = Game;
+
+(function (Game) {
+  class NotificationCenter {
+    constructor() {
+      this.mEvtList = [];
+    }
+
+    static getInstance() {
+      if (!this.instance) {
+        this.instance = new NotificationCenter();
+      }
+
+      return this.instance;
+    }
+
+    registerEvt(evt) {
+      if (this.mEvtList[evt.mEvtName]) {
+        let evtArr = this.mEvtList[evt.mEvtName];
+        evtArr.forEach(element => {
+          if (element.mTarget == evt.mTarget) {
+            return;
+          }
+        });
+        this.mEvtList[evt.mEvtName].push(evt);
+      } else {
+        this.mEvtList[evt.mEvtName] = [];
+        this.mEvtList[evt.mEvtName].push(evt);
+      }
+    }
+
+    unRegisterEvt(evtName) {
+      if (this.mEvtList[evtName] && this.mEvtList[evtName].length > 0) {
+        this.mEvtList[evtName] = [];
+      }
+    }
+
+    unRegisterEvtByTarget(target) {
+      for (const key in this.mEvtList) {
+        if (Object.prototype.hasOwnProperty.call(this.mEvtList, key)) {
+          let evtArr = this.mEvtList[key];
+
+          for (let index = 0; index < evtArr.length; index++) {
+            if (evtArr[index].mTarget == target) {
+              this.mEvtList[key][index].splice(index);
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    notification(evtName, ...args) {
+      if (this.mEvtList[evtName] && this.mEvtList[evtName].length > 0) {
+        this.mEvtList[evtName].forEach(element => {
+          if (element.mEvtName == evtName) {
+            element.mCallBack.call(element.mTarget, args);
+          }
+        });
+      }
+    }
+
+  }
+
+  Game.NotificationCenter = NotificationCenter;
+})(Game || (exports.Game = Game = {}));
+},{}],"script/event/Event.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.EventSelf = void 0;
+
+// export namespace Game
+// {
+class EventSelf {
+  constructor(evtName, target, callBack) {
+    this.mEvtName = evtName;
+    this.mTarget = target;
+    this.mCallBack = callBack;
+  }
+
+} // }
+
+
+exports.EventSelf = EventSelf;
+},{}],"script/view/LoginView.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -663,6 +759,10 @@ Object.defineProperty(exports, "__esModule", {
 exports.view = void 0;
 
 var _BaseView = require("../ui/BaseView");
+
+var _NotificationCenter = require("../event/NotificationCenter");
+
+var _Event = require("../event/Event");
 
 var view;
 exports.view = view;
@@ -677,7 +777,15 @@ exports.view = view;
       console.log("initView.......");
     }
 
-    registerEvent() {}
+    registerEvent() {
+      console.log("loginView registerEvent");
+
+      _NotificationCenter.Game.NotificationCenter.getInstance().registerEvt(new _Event.EventSelf("loginInit", this, this.onLoginInit));
+    }
+
+    onLoginInit(arg0, arg1) {
+      console.log("reveice loginInit method  arg0=" + arg0 + "arg1=" + arg1);
+    }
 
     unRegisterEvent() {}
 
@@ -691,7 +799,7 @@ exports.view = view;
   LoginView.packageName = "LoginView";
   view.LoginView = LoginView;
 })(view || (exports.view = view = {}));
-},{"../ui/BaseView":"script/ui/BaseView.ts"}],"net/Network_ProtocolBuffer.ts":[function(require,module,exports) {
+},{"../ui/BaseView":"script/ui/BaseView.ts","../event/NotificationCenter":"script/event/NotificationCenter.ts","../event/Event":"script/event/Event.ts"}],"script/net/NetWork.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -703,43 +811,102 @@ exports.net = net;
 
 (function (net) {
   var Browser = Laya.Browser;
+  var Socket = Laya.Socket;
+  var Byte = Laya.Byte;
+  var Event = Laya.Event;
 
-  class Network_ProtocolBuffer {
+  class NetWork {
     constructor() {
-      this.ProtoBuf = Browser.window.protobuf;
-      this.ProtoBuf.load("res/protobuf/awesome.proto", this.onAssetsLoaded);
-      console.log("Network_ProtocolBuffer  constructor()");
+      this.mMessage = null;
+      let protoBuf = Browser.window.protobuf;
+      protoBuf.load("res/protobuf/awesome.proto", this.onAssetsLoaded);
+      console.log("NetWork  constructor()");
+    }
+
+    static getInstance() {
+      if (!NetWork.instance) {
+        NetWork.instance = new NetWork();
+      }
+
+      return NetWork.instance;
     }
 
     onAssetsLoaded(err, root) {
-      console.log("Network_ProtocolBuffer onAssetsLoaded" + err);
-      if (err) throw err; // Obtain a message type
+      console.log("NetWork onAssetsLoaded" + err);
+      if (err) throw err;
+      console.log("this=" + this);
+      console.log("root=", root); // Obtain a message type
 
-      var AwesomeMessage = root.lookup("awesomepackage.AwesomeMessage"); // Create a new message
+      let msg = root.lookup("awesomepackage.AwesomeMessage");
+      console.log("this.mRootMsg--->>" + msg); // Create a new message
 
-      var message = AwesomeMessage.create({
+      var message = this.mMessage.create({
         awesomeField: "AwesomeString"
       }); // Verify the message if necessary (i.e. when possibly incomplete or invalid)
 
-      var errMsg = AwesomeMessage.verify(message);
+      var errMsg = this.mMessage.verify(message);
       if (errMsg) throw Error(errMsg); // Encode a message to an Uint8Array (browser) or Buffer (node)
 
-      var buffer = AwesomeMessage.encode(message).finish(); // ... do something with buffer
+      var buffer = this.mMessage.encode(message).finish(); // ... do something with buffer
       // Or, encode a plain object
 
-      var buffer = AwesomeMessage.encode({
+      var buffer = this.mMessage.encode({
         awesomeField: "AwesomeString"
       }).finish(); // ... do something with buffer
       // Decode an Uint8Array (browser) or Buffer (node) to a message
 
-      var message = AwesomeMessage.decode(buffer);
+      var message = this.mMessage.decode(buffer);
       console.log("message = " + message + "" + JSON.stringify(message)); // ... do something with message
-      // If your application uses length-delimited buffers, there is also encodeDelimited and decodeDelimited.
+    }
+
+    connectByUrl(url) {
+      this.socket = new Socket(); //this.socket.connect("echo.websocket.org", 80);
+
+      this.socket.connectByUrl("ws://echo.websocket.org:80");
+      this.output = this.socket.output;
+      this.socket.on(Event.OPEN, this, this.onSocketOpen);
+      this.socket.on(Event.CLOSE, this, this.onSocketClose);
+      this.socket.on(Event.MESSAGE, this, this.onMessageReveived);
+      this.socket.on(Event.ERROR, this, this.onConnectError);
+    }
+
+    onSocketOpen() {
+      console.log("Connected"); // 发送字符串
+
+      this.socket.send("demonstrate <sendString>"); // 使用output.writeByte发送
+
+      var message = "demonstrate <output.writeByte>";
+
+      for (var i = 0; i < message.length; ++i) {
+        this.output.writeByte(message.charCodeAt(i));
+      }
+
+      this.socket.flush();
+    }
+
+    onSocketClose() {
+      console.log("Socket closed");
+    }
+
+    onMessageReveived(message) {
+      console.log("Message from server:");
+
+      if (typeof message == "string") {
+        console.log(message);
+      } else if (message instanceof ArrayBuffer) {
+        console.log(new Byte(message).readUTFBytes());
+      }
+
+      this.socket.input.clear();
+    }
+
+    onConnectError(e) {
+      console.log("error");
     }
 
   }
 
-  net.Network_ProtocolBuffer = Network_ProtocolBuffer;
+  net.NetWork = NetWork;
 })(net || (exports.net = net = {}));
 },{}],"Main.ts":[function(require,module,exports) {
 "use strict";
@@ -750,7 +917,9 @@ var _Uimanager = require("./script/manager/Uimanager");
 
 var _LoginView = require("./script/view/LoginView");
 
-var _Network_ProtocolBuffer = require("./net/Network_ProtocolBuffer");
+var _NetWork = require("./script/net/NetWork");
+
+var _NotificationCenter = require("./script/event/NotificationCenter");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -791,14 +960,20 @@ class Main {
       console.log("1111111111");
 
       _Uimanager.UiManager.getInstance().closePanel(_LoginView.view.LoginView);
+
+      _NotificationCenter.Game.NotificationCenter.getInstance().notification("loginInit", "111", "222");
     });
     console.log("test protocolBuffer");
-    new _Network_ProtocolBuffer.net.Network_ProtocolBuffer();
+
+    _NetWork.net.NetWork.getInstance();
+
+    let foo = () => {}; // foo.call
+
   }
 
 } //激活启动类
 
 
 new Main();
-},{"./GameConfig":"GameConfig.ts","./script/manager/Uimanager":"script/manager/Uimanager.ts","./script/view/LoginView":"script/view/LoginView.ts","./net/Network_ProtocolBuffer":"net/Network_ProtocolBuffer.ts"}]},{},["Main.ts"], null)
+},{"./GameConfig":"GameConfig.ts","./script/manager/Uimanager":"script/manager/Uimanager.ts","./script/view/LoginView":"script/view/LoginView.ts","./script/net/NetWork":"script/net/NetWork.ts","./script/event/NotificationCenter":"script/event/NotificationCenter.ts"}]},{},["Main.ts"], null)
 //# sourceMappingURL=/Main.js.map
