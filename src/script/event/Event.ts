@@ -1,4 +1,4 @@
-export namespace Game
+namespace Game
 {
     export class EventSelf{
         public mEvtName:string;

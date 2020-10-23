@@ -1,3 +1,5 @@
+import { Log } from "../util/Log";
+
 export module net
 {
 	import Loader = Laya.Loader;
@@ -12,6 +14,7 @@ export module net
 		
 		private static instance:NetWork;
 		private mMessage:any = null;
+		private mRoot:any = null;
 		private socket: Socket;
 		private output: Byte;
 
@@ -35,6 +38,7 @@ export module net
 				throw err;
 			console.log("this="+this);
 			console.log("root=",root);
+			this.mRoot = root;
 			// Obtain a message type
 			this.mMessage = root.lookup("awesomepackage.AwesomeMessage");
 			console.log("this.mMessage--->>"+ this.mMessage);
@@ -65,13 +69,19 @@ export module net
 			var message:any = this.mMessage.decode(buffer);
 			console.log("message = "+message+""+JSON.stringify(message));
 			// ... do something with message
+			// this.connectByUrl("ws://192.168.3.3:8080");
+			// this.connectByUrl("ws://192.168.3.27:8080");
+			// this.connectByUrl("ws://192.168.3.27:8080");
+			this.connectByUrl("ws://127.0.0.1:8080");
 
 		}
 
 		private connectByUrl(url:string): void {
+			Log.info("connectByUrl");
 			this.socket = new Socket();
 			//this.socket.connect("echo.websocket.org", 80);
-			this.socket.connectByUrl("ws://echo.websocket.org:80");
+			// this.socket.connectByUrl("ws://echo.websocket.org:80");
+			this.socket.connectByUrl(url);
 
 			this.output = this.socket.output;
 
@@ -83,16 +93,39 @@ export module net
 
 		private onSocketOpen(): void {
 			console.log("Connected");
+			this.output
+			//test
+			let msgHead = 10001;
+			this.output.writeUint16(msgHead);
+
+			this.mMessage = this.mRoot.lookup("awesomepackage.C2R_Login");
+			console.log("this.mMessage--->>"+ this.mMessage);
+			// Create a new message
+			let message:any = this.mMessage.create(
+				{rpcId:1, account:"test", password:"111111" });
+
+			// Verify the message if necessary (i.e. when possibly incomplete or invalid)
+			var errMsg:any = this.mMessage.verify(message);
+			if (errMsg)
+				throw Error(errMsg);
+
+			// Encode a message to an Uint8Array (browser) or Buffer (node)
+			var buffer:any = this.mMessage.encode(message).finish();
+			// this.output.writeArrayBuffer(buffer,2)
+			
+			// Log.info("msg length="+msgHead.length);
+			// this.output.writeUTFString(msgHead);
 
 			// 发送字符串
-			this.socket.send("demonstrate <sendString>");
+			// this.socket.send("demonstrate <sendString>");
 
-			// 使用output.writeByte发送
-			var message: string = "demonstrate <output.writeByte>";
-			for (var i: number = 0; i < message.length; ++i) {
-				this.output.writeByte(message.charCodeAt(i));
-			}
+			// // 使用output.writeByte发送
+			// var message: string = "demonstrate <output.writeByte>";
+			// for (var i: number = 0; i < message.length; ++i) {
+			// 	this.output.writeByte(message.charCodeAt(i));
+			// }
 			this.socket.flush();
+			console.log("消息发送完成");
 		}
 
 		private onSocketClose(): void {
@@ -111,7 +144,7 @@ export module net
 		}
 
 		private onConnectError(e: Event): void {
-			console.log("error");
+			console.log("error="+JSON.stringify(e));
 		}
 	}
 }

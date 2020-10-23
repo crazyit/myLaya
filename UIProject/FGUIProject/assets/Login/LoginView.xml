@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="1136,640">
   <displayList>
-    <image id="n1_h8rr" name="bg" src="h8rr7" fileName="images/5.png" xy="260,126"/>
+    <image id="n1_h8rr" name="bg" src="h8rr7" fileName="images/5.png" xy="260,126" size="615,387" aspect="true"/>
+    <image id="n2_voqa" name="n2" src="h8rra" fileName="images/btnimage.png" xy="512,294"/>
+    <loader id="n3_fclh" name="n3" xy="515,75" size="50,50" url="ui://3cvazr8ph8rr6"/>
   </displayList>
 </component>

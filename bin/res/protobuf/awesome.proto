@@ -5,3 +5,9 @@ syntax = "proto3";
 message AwesomeMessage {
     string awesome_field = 1; // becomes awesomeField
 }
+message C2R_Login // IRequest
+{
+  int32 rpcId = 90;
+  string  Account   = 1;  // 帐号
+  string  Password = 2;  // 密码
+}

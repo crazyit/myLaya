@@ -3,7 +3,6 @@ import { UiManager } from "./script/manager/Uimanager";
 import { view } from "./script/view/LoginView";
 import "./script/net/NetWork"
 import { net } from "./script/net/NetWork";
-import {Game} from "./script/event/NotificationCenter"
 import { Log } from "./script/util/Log";
 
 class Main {
@@ -45,8 +44,8 @@ class Main {
 
 		Laya.timer.once(2000,this,()=>{
 			console.log("1111111111");
-			UiManager.getInstance().closePanel(view.LoginView);
-			Game.NotificationCenter.getInstance().notification("loginInit","111","222");
+			// UiManager.getInstance().closePanel(view.LoginView);
+			// Game.NotificationCenter.getInstance().notification("loginInit","111","222");
 		})
 		console.log("test protocolBuffer");
 		net.NetWork.getInstance();

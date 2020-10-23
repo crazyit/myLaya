@@ -655,103 +655,7 @@ exports.topUi = topUi;
 
   topUi.BaseView = BaseView;
 })(topUi || (exports.topUi = topUi = {}));
-},{"../../INITConfig":"INITConfig.ts","./AbsBaseView":"script/ui/AbsBaseView.ts"}],"script/event/NotificationCenter.ts":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Game = void 0;
-var Game;
-exports.Game = Game;
-
-(function (Game) {
-  class NotificationCenter {
-    constructor() {
-      this.mEvtList = [];
-    }
-
-    static getInstance() {
-      if (!this.instance) {
-        this.instance = new NotificationCenter();
-      }
-
-      return this.instance;
-    }
-
-    registerEvt(evt) {
-      if (this.mEvtList[evt.mEvtName]) {
-        let evtArr = this.mEvtList[evt.mEvtName];
-        evtArr.forEach(element => {
-          if (element.mTarget == evt.mTarget) {
-            return;
-          }
-        });
-        this.mEvtList[evt.mEvtName].push(evt);
-      } else {
-        this.mEvtList[evt.mEvtName] = [];
-        this.mEvtList[evt.mEvtName].push(evt);
-      }
-    }
-
-    unRegisterEvt(evtName) {
-      if (this.mEvtList[evtName] && this.mEvtList[evtName].length > 0) {
-        this.mEvtList[evtName] = [];
-      }
-    }
-
-    unRegisterEvtByTarget(target) {
-      for (const key in this.mEvtList) {
-        if (Object.prototype.hasOwnProperty.call(this.mEvtList, key)) {
-          let evtArr = this.mEvtList[key];
-
-          for (let index = 0; index < evtArr.length; index++) {
-            if (evtArr[index].mTarget == target) {
-              this.mEvtList[key][index].splice(index);
-              break;
-            }
-          }
-        }
-      }
-    }
-
-    notification(evtName, ...args) {
-      if (this.mEvtList[evtName] && this.mEvtList[evtName].length > 0) {
-        this.mEvtList[evtName].forEach(element => {
-          if (element.mEvtName == evtName) {
-            element.mCallBack.call(element.mTarget, args);
-          }
-        });
-      }
-    }
-
-  }
-
-  Game.NotificationCenter = NotificationCenter;
-})(Game || (exports.Game = Game = {}));
-},{}],"script/event/Event.ts":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Game = void 0;
-var Game;
-exports.Game = Game;
-
-(function (Game) {
-  class EventSelf {
-    constructor(evtName, target, callBack) {
-      this.mEvtName = evtName;
-      this.mTarget = target;
-      this.mCallBack = callBack;
-    }
-
-  }
-
-  Game.EventSelf = EventSelf;
-})(Game || (exports.Game = Game = {}));
-},{}],"script/view/LoginView.ts":[function(require,module,exports) {
+},{"../../INITConfig":"INITConfig.ts","./AbsBaseView":"script/ui/AbsBaseView.ts"}],"script/view/LoginView.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -760,14 +664,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.view = void 0;
 
 var _BaseView = require("../ui/BaseView");
-
-var _NotificationCenter = require("../event/NotificationCenter");
-
-var EventSelf = _interopRequireWildcard(require("../event/Event"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 var view;
 exports.view = view;
@@ -783,9 +679,7 @@ exports.view = view;
     }
 
     registerEvent() {
-      console.log("loginView registerEvent");
-
-      _NotificationCenter.Game.NotificationCenter.getInstance().registerEvt(new EventSelf.Game.EventSelf("loginInit", this, this.onLoginInit));
+      console.log("loginView registerEvent"); // Game.NotificationCenter.getInstance().registerEvt(new Game.EventSelf("loginInit",this,this.onLoginInit))
     }
 
     onLoginInit(arg0, arg1) {
@@ -804,118 +698,7 @@ exports.view = view;
   LoginView.packageName = "LoginView";
   view.LoginView = LoginView;
 })(view || (exports.view = view = {}));
-},{"../ui/BaseView":"script/ui/BaseView.ts","../event/NotificationCenter":"script/event/NotificationCenter.ts","../event/Event":"script/event/Event.ts"}],"script/net/NetWork.ts":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.net = void 0;
-var net;
-exports.net = net;
-
-(function (net) {
-  var Browser = Laya.Browser;
-  var Socket = Laya.Socket;
-  var Byte = Laya.Byte;
-  var Event = Laya.Event;
-
-  class NetWork {
-    constructor() {
-      this.mMessage = null;
-      let protoBuf = Browser.window.protobuf;
-      protoBuf.load("res/protobuf/awesome.proto", (err, root) => {
-        this.onAssetsLoaded(err, root);
-      });
-      console.log("NetWork  constructor()");
-    }
-
-    static getInstance() {
-      if (!NetWork.instance) {
-        NetWork.instance = new NetWork();
-      }
-
-      return NetWork.instance;
-    }
-
-    onAssetsLoaded(err, root) {
-      console.log("NetWork onAssetsLoaded" + err);
-      if (err) throw err;
-      console.log("this=" + this);
-      console.log("root=", root); // Obtain a message type
-
-      this.mMessage = root.lookup("awesomepackage.AwesomeMessage");
-      console.log("this.mMessage--->>" + this.mMessage); // Create a new message
-
-      var message = this.mMessage.create({
-        awesomeField: "AwesomeString"
-      }); // Verify the message if necessary (i.e. when possibly incomplete or invalid)
-
-      var errMsg = this.mMessage.verify(message);
-      if (errMsg) throw Error(errMsg); // Encode a message to an Uint8Array (browser) or Buffer (node)
-
-      var buffer = this.mMessage.encode(message).finish(); // ... do something with buffer
-      // Or, encode a plain object
-
-      var buffer = this.mMessage.encode({
-        awesomeField: "AwesomeString"
-      }).finish(); // ... do something with buffer
-      // Decode an Uint8Array (browser) or Buffer (node) to a message
-
-      var message = this.mMessage.decode(buffer);
-      console.log("message = " + message + "" + JSON.stringify(message)); // ... do something with message
-    }
-
-    connectByUrl(url) {
-      this.socket = new Socket(); //this.socket.connect("echo.websocket.org", 80);
-
-      this.socket.connectByUrl("ws://echo.websocket.org:80");
-      this.output = this.socket.output;
-      this.socket.on(Event.OPEN, this, this.onSocketOpen);
-      this.socket.on(Event.CLOSE, this, this.onSocketClose);
-      this.socket.on(Event.MESSAGE, this, this.onMessageReveived);
-      this.socket.on(Event.ERROR, this, this.onConnectError);
-    }
-
-    onSocketOpen() {
-      console.log("Connected"); // 发送字符串
-
-      this.socket.send("demonstrate <sendString>"); // 使用output.writeByte发送
-
-      var message = "demonstrate <output.writeByte>";
-
-      for (var i = 0; i < message.length; ++i) {
-        this.output.writeByte(message.charCodeAt(i));
-      }
-
-      this.socket.flush();
-    }
-
-    onSocketClose() {
-      console.log("Socket closed");
-    }
-
-    onMessageReveived(message) {
-      console.log("Message from server:");
-
-      if (typeof message == "string") {
-        console.log(message);
-      } else if (message instanceof ArrayBuffer) {
-        console.log(new Byte(message).readUTFBytes());
-      }
-
-      this.socket.input.clear();
-    }
-
-    onConnectError(e) {
-      console.log("error");
-    }
-
-  }
-
-  net.NetWork = NetWork;
-})(net || (exports.net = net = {}));
-},{}],"script/util/Log.ts":[function(require,module,exports) {
+},{"../ui/BaseView":"script/ui/BaseView.ts"}],"script/util/Log.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -949,7 +732,150 @@ class Log {
 }
 
 exports.Log = Log;
-},{"../../InitConfig":"INITConfig.ts"}],"Main.ts":[function(require,module,exports) {
+},{"../../InitConfig":"INITConfig.ts"}],"script/net/NetWork.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.net = void 0;
+
+var _Log = require("../util/Log");
+
+var net;
+exports.net = net;
+
+(function (net) {
+  var Browser = Laya.Browser;
+  var Socket = Laya.Socket;
+  var Byte = Laya.Byte;
+  var Event = Laya.Event;
+
+  class NetWork {
+    constructor() {
+      this.mMessage = null;
+      this.mRoot = null;
+      let protoBuf = Browser.window.protobuf;
+      protoBuf.load("res/protobuf/awesome.proto", (err, root) => {
+        this.onAssetsLoaded(err, root);
+      });
+      console.log("NetWork  constructor()");
+    }
+
+    static getInstance() {
+      if (!NetWork.instance) {
+        NetWork.instance = new NetWork();
+      }
+
+      return NetWork.instance;
+    }
+
+    onAssetsLoaded(err, root) {
+      console.log("NetWork onAssetsLoaded" + err);
+      if (err) throw err;
+      console.log("this=" + this);
+      console.log("root=", root);
+      this.mRoot = root; // Obtain a message type
+
+      this.mMessage = root.lookup("awesomepackage.AwesomeMessage");
+      console.log("this.mMessage--->>" + this.mMessage); // Create a new message
+
+      var message = this.mMessage.create({
+        awesomeField: "AwesomeString"
+      }); // Verify the message if necessary (i.e. when possibly incomplete or invalid)
+
+      var errMsg = this.mMessage.verify(message);
+      if (errMsg) throw Error(errMsg); // Encode a message to an Uint8Array (browser) or Buffer (node)
+
+      var buffer = this.mMessage.encode(message).finish(); // ... do something with buffer
+      // Or, encode a plain object
+
+      var buffer = this.mMessage.encode({
+        awesomeField: "AwesomeString"
+      }).finish(); // ... do something with buffer
+      // Decode an Uint8Array (browser) or Buffer (node) to a message
+
+      var message = this.mMessage.decode(buffer);
+      console.log("message = " + message + "" + JSON.stringify(message)); // ... do something with message
+      // this.connectByUrl("ws://192.168.3.3:8080");
+      // this.connectByUrl("ws://192.168.3.27:8080");
+      // this.connectByUrl("ws://192.168.3.27:8080");
+
+      this.connectByUrl("ws://127.0.0.1:8080");
+    }
+
+    connectByUrl(url) {
+      _Log.Log.info("connectByUrl");
+
+      this.socket = new Socket(); //this.socket.connect("echo.websocket.org", 80);
+      // this.socket.connectByUrl("ws://echo.websocket.org:80");
+
+      this.socket.connectByUrl(url);
+      this.output = this.socket.output;
+      this.socket.on(Event.OPEN, this, this.onSocketOpen);
+      this.socket.on(Event.CLOSE, this, this.onSocketClose);
+      this.socket.on(Event.MESSAGE, this, this.onMessageReveived);
+      this.socket.on(Event.ERROR, this, this.onConnectError);
+    }
+
+    onSocketOpen() {
+      console.log("Connected");
+      this.output; //test
+
+      let msgHead = 10001;
+      this.output.writeUint16(msgHead);
+      this.mMessage = this.mRoot.lookup("awesomepackage.C2R_Login");
+      console.log("this.mMessage--->>" + this.mMessage); // Create a new message
+
+      let message = this.mMessage.create({
+        rpcId: 1,
+        account: "test",
+        password: "111111"
+      }); // Verify the message if necessary (i.e. when possibly incomplete or invalid)
+
+      var errMsg = this.mMessage.verify(message);
+      if (errMsg) throw Error(errMsg); // Encode a message to an Uint8Array (browser) or Buffer (node)
+
+      var buffer = this.mMessage.encode(message).finish(); // this.output.writeArrayBuffer(buffer,2)
+      // Log.info("msg length="+msgHead.length);
+      // this.output.writeUTFString(msgHead);
+      // 发送字符串
+      // this.socket.send("demonstrate <sendString>");
+      // // 使用output.writeByte发送
+      // var message: string = "demonstrate <output.writeByte>";
+      // for (var i: number = 0; i < message.length; ++i) {
+      // 	this.output.writeByte(message.charCodeAt(i));
+      // }
+
+      this.socket.flush();
+      console.log("消息发送完成");
+    }
+
+    onSocketClose() {
+      console.log("Socket closed");
+    }
+
+    onMessageReveived(message) {
+      console.log("Message from server:");
+
+      if (typeof message == "string") {
+        console.log(message);
+      } else if (message instanceof ArrayBuffer) {
+        console.log(new Byte(message).readUTFBytes());
+      }
+
+      this.socket.input.clear();
+    }
+
+    onConnectError(e) {
+      console.log("error=" + JSON.stringify(e));
+    }
+
+  }
+
+  net.NetWork = NetWork;
+})(net || (exports.net = net = {}));
+},{"../util/Log":"script/util/Log.ts"}],"Main.ts":[function(require,module,exports) {
 "use strict";
 
 var _GameConfig = _interopRequireDefault(require("./GameConfig"));
@@ -959,8 +885,6 @@ var _Uimanager = require("./script/manager/Uimanager");
 var _LoginView = require("./script/view/LoginView");
 
 var _NetWork = require("./script/net/NetWork");
-
-var _NotificationCenter = require("./script/event/NotificationCenter");
 
 var _Log = require("./script/util/Log");
 
@@ -1000,11 +924,8 @@ class Main {
     _Uimanager.UiManager.getInstance().openPanel(_LoginView.view.LoginView);
 
     Laya.timer.once(2000, this, () => {
-      console.log("1111111111");
-
-      _Uimanager.UiManager.getInstance().closePanel(_LoginView.view.LoginView);
-
-      _NotificationCenter.Game.NotificationCenter.getInstance().notification("loginInit", "111", "222");
+      console.log("1111111111"); // UiManager.getInstance().closePanel(view.LoginView);
+      // Game.NotificationCenter.getInstance().notification("loginInit","111","222");
     });
     console.log("test protocolBuffer");
 
@@ -1017,5 +938,5 @@ class Main {
 
 
 new Main();
-},{"./GameConfig":"GameConfig.ts","./script/manager/Uimanager":"script/manager/Uimanager.ts","./script/view/LoginView":"script/view/LoginView.ts","./script/net/NetWork":"script/net/NetWork.ts","./script/event/NotificationCenter":"script/event/NotificationCenter.ts","./script/util/Log":"script/util/Log.ts"}]},{},["Main.ts"], null)
+},{"./GameConfig":"GameConfig.ts","./script/manager/Uimanager":"script/manager/Uimanager.ts","./script/view/LoginView":"script/view/LoginView.ts","./script/net/NetWork":"script/net/NetWork.ts","./script/util/Log":"script/util/Log.ts"}]},{},["Main.ts"], null)
 //# sourceMappingURL=/Main.js.map
