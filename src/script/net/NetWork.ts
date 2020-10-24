@@ -93,7 +93,7 @@ export module net
 
 		private onSocketOpen(): void {
 			console.log("Connected");
-			this.output
+			this.socket.endian = Laya.Byte.LITTLE_ENDIAN;
 			//test
 			let msgHead = 10001;
 			this.output.writeUint16(msgHead);
@@ -102,7 +102,7 @@ export module net
 			console.log("this.mMessage--->>"+ this.mMessage);
 			// Create a new message
 			let message:any = this.mMessage.create(
-				{rpcId:1, account:"test", password:"111111" });
+				{rpcId:11, Account:"test", Password:"111111" });
 
 			// Verify the message if necessary (i.e. when possibly incomplete or invalid)
 			var errMsg:any = this.mMessage.verify(message);
@@ -111,13 +111,10 @@ export module net
 
 			// Encode a message to an Uint8Array (browser) or Buffer (node)
 			var buffer:any = this.mMessage.encode(message).finish();
-			// this.output.writeArrayBuffer(buffer,2)
-			
-			// Log.info("msg length="+msgHead.length);
-			// this.output.writeUTFString(msgHead);
+			this.output.writeArrayBuffer(buffer);
 
-			// 发送字符串
-			// this.socket.send("demonstrate <sendString>");
+			let decodeMsg:any = this.mMessage.decode(buffer);
+			console.log("decodeMsg = "+message+" = "+JSON.stringify(message));
 
 			// // 使用output.writeByte发送
 			// var message: string = "demonstrate <output.writeByte>";
@@ -139,6 +136,14 @@ export module net
 			}
 			else if (message instanceof ArrayBuffer) {
 				console.log(new Byte(message).readUTFBytes());
+				var bytes = new Laya.Byte(message);
+                while (bytes.length > bytes.pos) {
+                    let opCode = bytes.getUint16();
+                    let pbContent = bytes.getUint8Array(bytes.pos, bytes.length);
+                    let l = this.mRoot.lookupType("awesomepackage.S2C_"+opCode);
+					let msg = l.decode(pbContent);
+					console.log("MessageReveived opCode="+opCode+"msg="+JSON.stringify(msg));
+                }
 			}
 			this.socket.input.clear();
 		}
