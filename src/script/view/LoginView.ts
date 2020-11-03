@@ -10,8 +10,12 @@ export module view{
         }
         initView() {
             let bg:fgui.GImage = this.getChild("bg").asImage;
-            bg.scaleX = 0.1;
+            // bg.scaleX = 0.1;
             console.log("initView.......");
+            let loader = new fgui.GLoader();
+            loader.url = "res/webp/s10100_19_260.webp";
+            this.getParent().addChild(loader);
+            console.log("initView");
         }
         registerEvent() {
             console.log("loginView registerEvent");

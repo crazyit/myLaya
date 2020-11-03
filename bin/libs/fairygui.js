@@ -13683,6 +13683,12 @@
         static getByName(name) {
             return UIPackage._instByName[name];
         }
+        static changeExt(fileName, newExt) {
+            var pos = fileName.includes(".") ? fileName.lastIndexOf(".") : fileName.length
+            var fileRoot = fileName.substr(0, pos)
+            var output = `${fileRoot}.${newExt}`
+            return fileName
+        }
         static addPackage(resKey, descData) {
             if (!descData) {
                 descData = fgui.AssetProxy.inst.getRes(resKey + "." + fgui.UIConfig.packageFileExtension);
@@ -13744,7 +13750,7 @@
                         for (let j = 0; j < cnt; j++) {
                             let pi = pkg._items[j];
                             if (pi.type == fgui.PackageItemType.Atlas) {
-                                urls.push({ url: pi.file, type: Laya.Loader.IMAGE });
+                                urls.push({ url: UIPackage.changeExt(pi.file,"webp"), type: Laya.Loader.IMAGE });
                             }
                             else if (pi.type == fgui.PackageItemType.Sound) {
                                 urls.push({ url: pi.file, type: Laya.Loader.SOUND });
@@ -14001,6 +14007,7 @@
                         pi.highResolution = buffer.readSArray(highResCnt);
                 }
                 this._items.push(pi);
+                pi.file = (pi.file ? UIPackage.changeExt(pi.file,"webp"):pi.file);
                 this._itemsById[pi.id] = pi;
                 if (pi.name != null)
                     this._itemsByName[pi.name] = pi;

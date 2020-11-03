@@ -69,10 +69,10 @@ export module net
 			var message:any = this.mMessage.decode(buffer);
 			console.log("message = "+message+""+JSON.stringify(message));
 			// ... do something with message
-			// this.connectByUrl("ws://192.168.3.3:8080");
+			this.connectByUrl("ws://192.168.3.3:8080");
 			// this.connectByUrl("ws://192.168.3.27:8080");
 			// this.connectByUrl("ws://192.168.3.27:8080");
-			this.connectByUrl("ws://127.0.0.1:8080");
+			// this.connectByUrl("ws://127.0.0.1:8080");
 
 		}
 
