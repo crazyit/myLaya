@@ -13658,6 +13658,7 @@
             this._dependencies = [];
             this._branches = [];
             this._branchIndex = -1;
+            this._isSupportWebp = -1;
         }
         static get branch() {
             return UIPackage._branch;
@@ -13683,11 +13684,29 @@
         static getByName(name) {
             return UIPackage._instByName[name];
         }
-        static changeExt(fileName, newExt) {
-            var pos = fileName.includes(".") ? fileName.lastIndexOf(".") : fileName.length
-            var fileRoot = fileName.substr(0, pos)
-            var output = `${fileRoot}.${newExt}`
-            return fileName
+        static isSupportWebp(){
+            if(UIPackage._isSupportWebp >= 0){
+                return UIPackage._isSupportWebp;
+            }
+            let canvas = Laya.Browser.window.document.createElement('canvas');
+            canvas.width = 2;
+            canvas.height = 2;
+            canvas.style.width = 2 + "px";
+            canvas.style.height = 2 + "px";
+            let isSupport = !![].map && canvas.toDataURL('image/webp').indexOf('data:image/webp') == 0;	
+            UIPackage._isSupportWebp = isSupport ? 1:0;
+            return UIPackage._isSupportWebp ;
+        }
+        static changeExt(fileName) {
+            if(UIPackage.isSupportWebp() > 0){
+                let newExt = "webp";
+                let pos = fileName.includes(".") ? fileName.lastIndexOf(".") : fileName.length
+                let fileRoot = fileName.substr(0, pos)
+                let output = `${fileRoot}.${newExt}`
+                return output;
+            }else{
+                return fileName;
+            }
         }
         static addPackage(resKey, descData) {
             if (!descData) {
@@ -13750,7 +13769,7 @@
                         for (let j = 0; j < cnt; j++) {
                             let pi = pkg._items[j];
                             if (pi.type == fgui.PackageItemType.Atlas) {
-                                urls.push({ url: UIPackage.changeExt(pi.file,"webp"), type: Laya.Loader.IMAGE });
+                                urls.push({ url: UIPackage.changeExt(pi.file), type: Laya.Loader.IMAGE });
                             }
                             else if (pi.type == fgui.PackageItemType.Sound) {
                                 urls.push({ url: pi.file, type: Laya.Loader.SOUND });
@@ -14007,7 +14026,7 @@
                         pi.highResolution = buffer.readSArray(highResCnt);
                 }
                 this._items.push(pi);
-                pi.file = (pi.file ? UIPackage.changeExt(pi.file,"webp"):pi.file);
+                pi.file = (pi.file ? UIPackage.changeExt(pi.file):pi.file);
                 this._itemsById[pi.id] = pi;
                 if (pi.name != null)
                     this._itemsByName[pi.name] = pi;

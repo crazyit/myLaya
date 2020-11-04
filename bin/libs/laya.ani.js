@@ -3241,6 +3241,30 @@
             this._textureDic = {};
             this.mBoneArr = [];
         }
+        static isSupportWebp(){
+            if(Templet._isSupportWebp >= 0){
+                return Templet._isSupportWebp;
+            }
+            let canvas = Laya.Browser.window.document.createElement('canvas');
+            canvas.width = 2;
+            canvas.height = 2;
+            canvas.style.width = 2 + "px";
+            canvas.style.height = 2 + "px";
+            let isSupport = !![].map && canvas.toDataURL('image/webp').indexOf('data:image/webp') == 0;	
+            Templet._isSupportWebp = isSupport ? 1:0;
+            return Templet._isSupportWebp ;
+        }
+        static changeExt(fileName) {
+            // if(Templet.isSupportWebp() > 0){
+            //     let newExt = "webp";
+            //     let pos = fileName.includes(".") ? fileName.lastIndexOf(".") : fileName.length
+            //     let fileRoot = fileName.substr(0, pos)
+            //     let output = `${fileRoot}.${newExt}`
+            //     return output;
+            // }else{
+                return fileName;
+            // }
+        }
         loadAni(url) {
             this._skBufferUrl = url;
             Laya.ILaya.loader.load(url, Laya.Handler.create(this, this.onComplete), null, Laya.ILaya.Loader.BUFFER);
@@ -3319,11 +3343,12 @@
                 tTempleData = tByte.getFloat32();
                 tTempleData = tByte.getFloat32();
                 tTempleData = tByte.getFloat32();
+                tSrcTexturePath = Templet.changeExt(tSrcTexturePath);
                 if (this._loadList.indexOf(tSrcTexturePath) == -1) {
                     this._loadList.push(tSrcTexturePath);
                 }
             }
-            Laya.ILaya.loader.load(this._loadList, Laya.Handler.create(this, this._textureComplete));
+            Laya.ILaya.loader.load(this._loadList, Laya.Handler.create(this, this._textureComplete),null,Laya.ILaya.Loader.IMAGE);
         }
         _textureComplete() {
             var tTexture;
@@ -3353,6 +3378,7 @@
             for (i = 0; i < tTextureLen; i++) {
                 tTexture = this._mainTexture;
                 tSrcTexturePath = this._path + tTextureNameArr[i * 2];
+                tSrcTexturePath = Templet.changeExt(tSrcTexturePath);
                 tTextureName = tTextureNameArr[i * 2 + 1];
                 if (this._mainTexture == null) {
                     tTexture = this._textureDic[tSrcTexturePath];
