@@ -3255,15 +3255,15 @@
             return Templet._isSupportWebp ;
         }
         static changeExt(fileName) {
-            // if(Templet.isSupportWebp() > 0){
-            //     let newExt = "webp";
-            //     let pos = fileName.includes(".") ? fileName.lastIndexOf(".") : fileName.length
-            //     let fileRoot = fileName.substr(0, pos)
-            //     let output = `${fileRoot}.${newExt}`
-            //     return output;
-            // }else{
+            if(Templet.isSupportWebp() > 0){
+                let newExt = "webp";
+                let pos = fileName.includes(".") ? fileName.lastIndexOf(".") : fileName.length;
+                let fileRoot = fileName.substr(0, pos);
+                let output = `${fileRoot}.${newExt}`;
+                return output;
+            }else{
                 return fileName;
-            // }
+            }
         }
         loadAni(url) {
             this._skBufferUrl = url;

@@ -13698,11 +13698,12 @@
             return UIPackage._isSupportWebp ;
         }
         static changeExt(fileName) {
+            console.log("fairygui--fileName="+fileName+" UIPackage.isSupportWebp()="+UIPackage.isSupportWebp());
             if(UIPackage.isSupportWebp() > 0){
                 let newExt = "webp";
-                let pos = fileName.includes(".") ? fileName.lastIndexOf(".") : fileName.length
-                let fileRoot = fileName.substr(0, pos)
-                let output = `${fileRoot}.${newExt}`
+                let pos = fileName.includes(".") ? fileName.lastIndexOf(".") : fileName.length;
+                let fileRoot = fileName.substr(0, pos);
+                let output = `${fileRoot}.${newExt}`;
                 return output;
             }else{
                 return fileName;
