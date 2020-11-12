@@ -18,11 +18,7 @@
     <image id="vw5ie" name="titleBg.png" path="/images/"/>
     <image id="vw5if" name="bg2.png" path="/images/"/>
     <image id="vw5ig" name="ID_587.png" path="/images/"/>
-    <image id="vw5ih" name="ID_588.png" path="/images/"/>
     <image id="vw5ii" name="ID_589.png" path="/images/"/>
-    <image id="vw5ij" name="ad2.png" path="/images/"/>
-    <image id="vw5ik" name="ad1.png" path="/images/"/>
-    <image id="vw5il" name="ddz_skin_sel_img.png" path="/images/"/>
   </resources>
   <publish name="" excluded="h8rra,h8rr6"/>
 </packageDescription>

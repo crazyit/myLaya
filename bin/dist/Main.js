@@ -655,69 +655,7 @@ exports.topUi = topUi;
 
   topUi.BaseView = BaseView;
 })(topUi || (exports.topUi = topUi = {}));
-},{"../../INITConfig":"INITConfig.ts","./AbsBaseView":"script/ui/AbsBaseView.ts"}],"script/view/LoginAni.ts":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _GameConfig = _interopRequireDefault(require("../../GameConfig"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-class LoginAni {
-  constructor(sp) {
-    this.mFactory = null;
-    this.mArmature = null;
-    this.mSprite = null;
-    this.mSprite = sp;
-    this.mFactory = new Laya.Templet();
-    this.mFactory.on(Laya.Event.COMPLETE, this, this.parseComplete);
-    this.mFactory.on(Laya.Event.ERROR, this, this.onError);
-    this.mFactory.loadAni("res/ui/login_girl.sk");
-  }
-
-  onError() {
-    console.log("error");
-  }
-
-  parseComplete() {
-    this.mArmature = this.mFactory.buildArmature(0);
-    this.mArmature.x = _GameConfig.default.width / 2 + 320 - 300;
-    this.mArmature.y = _GameConfig.default.height / 2 + 50 - 200;
-    this.mArmature.scaleX = 0.8;
-    this.mArmature.scaleY = 0.8;
-    this.mSprite.addChild(this.mArmature);
-    this.mArmature.play(0, true);
-  }
-
-  destory() {
-    console.log('销毁登录动画');
-
-    if (this.mArmature != null) {
-      this.mArmature.stop();
-      this.mArmature.destroy(true); //从显存销毁龙骨动画及其子对象
-
-      this.mArmature.removeSelf();
-      this.mArmature.removeChildren();
-      this.mArmature = null;
-    }
-
-    if (this.mFactory != null) {
-      this.mFactory.off(Laya.Event.COMPLETE, this, this.parseComplete);
-      this.mFactory.off(Laya.Event.ERROR, this, this.onError);
-      this.mFactory.destroy(); //释放动画模板类下的纹理数据
-
-      this.mFactory = null;
-    }
-  }
-
-}
-
-exports.default = LoginAni;
-},{"../../GameConfig":"GameConfig.ts"}],"script/view/LoginView.ts":[function(require,module,exports) {
+},{"../../INITConfig":"INITConfig.ts","./AbsBaseView":"script/ui/AbsBaseView.ts"}],"script/view/LoginView.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -727,10 +665,6 @@ exports.view = void 0;
 
 var _BaseView = require("../ui/BaseView");
 
-var _LoginAni = _interopRequireDefault(require("./LoginAni"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var view;
 exports.view = view;
 
@@ -739,15 +673,14 @@ exports.view = view;
     initData() {}
 
     initView() {
-      let bg = this.getChild("bg").asImage; // bg.scaleX = 0.1;
-
+      // let bg:fgui.GImage = this.getChild("bg").asImage;
+      // bg.scaleX = 0.1;
       console.log("initView......."); // let loader = new fgui.GLoader();
       // loader.url = "res/webp/s10100_19_260.webp";
       // this.getParent().addChild(loader);
       // //登录界面龙骨动画
-
-      let loginAni = new _LoginAni.default(bg.displayObject);
-      console.log("initView");
+      // let loginAni = new LoginAni(bg.displayObject);
+      // console.log("initView");
     }
 
     registerEvent() {
@@ -770,7 +703,7 @@ exports.view = view;
   LoginView.packageName = "LoginView";
   view.LoginView = LoginView;
 })(view || (exports.view = view = {}));
-},{"../ui/BaseView":"script/ui/BaseView.ts","./LoginAni":"script/view/LoginAni.ts"}],"script/util/Log.ts":[function(require,module,exports) {
+},{"../ui/BaseView":"script/ui/BaseView.ts"}],"script/util/Log.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

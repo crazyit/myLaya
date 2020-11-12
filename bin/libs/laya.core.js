@@ -18651,7 +18651,8 @@ window.Laya= (function (exports) {
                         // if(r){
                         //     this._loadHtmlImage(url, this, this.onLoaded, this, onError);
                         // }else{
-                            this._loadTextureXR(url,this,this.onLoaded,this,onError);
+                            // this._loadTextureXR(url,this,this.onLoaded,this,onError);
+                            this._loadTextureWebpjsWASM(url,this,this.onLoaded,this,onError);
                         // }
                     })
                 }
@@ -18709,6 +18710,32 @@ window.Laya= (function (exports) {
                 imagedata.data.set(rgba);
                 clear();
                 onLoad.call(onLoadCaller, imagedata);
+            });
+            request.onerror = function (e) {
+                onError.call(onLoadCaller, e);
+            };
+            request.send();
+        }
+        _loadTextureWebpjsWASM (url, onLoadCaller, onLoad, onErrorCaller, onError) {
+            var request = new XMLHttpRequest;
+            var this1 = this;
+            request.open("get", url, true);
+            request.responseType = "arraybuffer";
+            request.onload = (function(event) {
+                var WebpToCanvas = Module.cwrap('WebpToSDL', 'number', ['array', 'number']);
+                var time=Date.now();
+                var response=new Uint8Array(request.response);
+                
+                var canvas= document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                
+                Module.canvas = canvas;
+                
+                var ret = WebpToCanvas(response, response.length);
+                time=Date.now()-time;
+                trace("webpjs decode time:"+time+"ms wh:"+canvas.width+","+canvas.height);
+                onLoad.call(onLoadCaller, canvas);
+                
             });
             request.onerror = function (e) {
                 onError.call(onLoadCaller, e);

@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="1136,640">
   <displayList>
-    <image id="n1_h8rr" name="bg" src="h8rr7" fileName="images/5.png" xy="260,126" size="615,387" aspect="true"/>
     <image id="n2_voqa" name="n2" src="h8rra" fileName="images/btnimage.png" xy="512,294"/>
     <loader id="n3_fclh" name="n3" xy="515,75" size="50,50" url="ui://3cvazr8ph8rr6"/>
     <image id="n4_vw5i" name="n4" src="vw5ie" fileName="images/titleBg.png" xy="130,46"/>
     <image id="n5_vw5i" name="n5" src="vw5ic" fileName="images/defaultBg.png" xy="99,116"/>
     <image id="n6_vw5i" name="n6" src="vw5id" fileName="images/ID_609.png" xy="30,34"/>
-    <image id="n7_vw5i" name="n7" src="vw5if" fileName="images/bg2.png" xy="54,578"/>
     <image id="n8_vw5i" name="n8" src="vw5ii" fileName="images/ID_589.png" xy="887,143"/>
-    <image id="n9_vw5i" name="n9" src="vw5ih" fileName="images/ID_588.png" xy="517,54"/>
     <image id="n10_vw5i" name="n10" src="vw5ig" fileName="images/ID_587.png" xy="868,191"/>
     <image id="n11_vw5i" name="n11" src="h8rr9" fileName="images/8.png" xy="177,322"/>
     <image id="n12_vw5i" name="n12" src="h8rr4" fileName="images/2.png" xy="182,178"/>
     <image id="n13_vw5i" name="n13" src="h8rr3" fileName="images/1.png" xy="188,448"/>
     <image id="n14_vw5i" name="n14" src="h8rr2" fileName="images/0.png" xy="29,138"/>
-    <image id="n15_vw5i" name="n15" src="vw5ij" fileName="images/ad2.png" xy="601,192"/>
-    <image id="n16_vw5i" name="n16" src="vw5ik" fileName="images/ad1.png" xy="323,184"/>
-    <image id="n17_vw5i" name="n17" src="vw5il" fileName="images/ddz_skin_sel_img.png" xy="491,133"/>
   </displayList>
 </component>
