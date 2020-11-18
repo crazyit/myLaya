@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component size="1136,640">
+<component size="1136,640" designImageLayer="1">
+  <controller name="c1" pages="0,,1," selected="0"/>
   <displayList>
     <image id="n2_voqa" name="n2" src="h8rra" fileName="images/btnimage.png" xy="512,294"/>
     <loader id="n3_fclh" name="n3" xy="515,75" size="50,50" url="ui://3cvazr8ph8rr6"/>
@@ -9,8 +10,124 @@
     <image id="n8_vw5i" name="n8" src="vw5ii" fileName="images/ID_589.png" xy="887,143"/>
     <image id="n10_vw5i" name="n10" src="vw5ig" fileName="images/ID_587.png" xy="868,191"/>
     <image id="n11_vw5i" name="n11" src="h8rr9" fileName="images/8.png" xy="177,322"/>
-    <image id="n12_vw5i" name="n12" src="h8rr4" fileName="images/2.png" xy="182,178"/>
+    <image id="n12_vw5i" name="n12" src="h8rr4" fileName="images/2.png" xy="182,178" size="17,108">
+      <relation target="n16_ly5x" sidePair="width-width,height-height"/>
+    </image>
     <image id="n13_vw5i" name="n13" src="h8rr3" fileName="images/1.png" xy="188,448"/>
     <image id="n14_vw5i" name="n14" src="h8rr2" fileName="images/0.png" xy="29,138"/>
+    <text id="n16_ly5x" name="n16" xy="229,225" size="102,19" aspect="true" fontSize="12" singleLine="true" text="12345678902111" input="true">
+      <gearText controller="c1" pages="1" values="123456789021110000000000000" default="12345678902111"/>
+    </text>
+    <image id="n17_ly5x" name="n17" src="h8rr4" fileName="images/2.png" xy="491,455" size="33,108">
+      <relation target="n18_ly5x" sidePair="left-left,top-top"/>
+    </image>
+    <text id="n18_ly5x" name="n18" xy="565,510" size="0,0" fontSize="12" text="">
+      <gearXY controller="c1" pages="1" values="585,510" default="565,510"/>
+      <gearText controller="c1" pages="1" values="1233465666677" default=""/>
+    </text>
+    <image id="n19_flal" name="n19" src="flalj" fileName="images/f2.png" xy="357,110"/>
+    <image id="n20_flal" name="n20" src="flalk" fileName="images/f3.png" xy="407,160"/>
+    <image id="n21_flal" name="n21" src="flall" fileName="images/f4.png" xy="457,210"/>
+    <image id="n22_flal" name="n22" src="flalm" fileName="images/f5.png" xy="507,260"/>
+    <image id="n23_flal" name="n23" src="flaln" fileName="images/f6.png" xy="557,310"/>
+    <image id="n24_flal" name="n24" src="flalo" fileName="images/f7.png" xy="607,360"/>
+    <image id="n25_flal" name="n25" src="flalp" fileName="images/f8.png" xy="657,410"/>
+    <image id="n26_flal" name="n26" src="flalq" fileName="images/f9.png" xy="707,460"/>
+    <image id="n27_flal" name="n27" src="flalr" fileName="images/fA.png" xy="757,510"/>
+    <image id="n28_flal" name="n28" src="flalj" fileName="images/f2.png" xy="55,-103" size="74,142"/>
+    <image id="n29_flal" name="n29" src="flalk" fileName="images/f3.png" xy="105,-53" size="74,142"/>
+    <image id="n30_flal" name="n30" src="flall" fileName="images/f4.png" xy="155,-3" size="74,142"/>
+    <image id="n31_flal" name="n31" src="flalm" fileName="images/f5.png" xy="205,46" size="74,142"/>
+    <image id="n32_flal" name="n32" src="flaln" fileName="images/f6.png" xy="255,96" size="74,142"/>
+    <image id="n33_flal" name="n33" src="flalo" fileName="images/f7.png" xy="305,146" size="74,142"/>
+    <image id="n34_flal" name="n34" src="flalp" fileName="images/f8.png" xy="355,196" size="74,142"/>
+    <image id="n35_flal" name="n35" src="flalq" fileName="images/f9.png" xy="405,246" size="74,142"/>
+    <image id="n36_flal" name="n36" src="flalr" fileName="images/fA.png" xy="455,296" size="74,142"/>
+    <image id="n37_flal" name="n37" src="flals" fileName="images/fJ.png" xy="505,346" size="74,142"/>
+    <image id="n38_flal" name="n38" src="flalt" fileName="images/fK.png" xy="555,396" size="74,142"/>
+    <image id="n39_flal" name="n39" src="flalu" fileName="images/fQ.png" xy="605,446" size="74,142"/>
+    <image id="n40_flal" name="n40" src="flalv" fileName="images/fT.png" xy="655,496" size="74,142"/>
+    <image id="n41_flal" name="n41" src="flalw" fileName="images/h2.png" xy="705,546" size="74,142"/>
+    <image id="n42_flal" name="n42" src="flalx" fileName="images/h3.png" xy="755,596" size="74,142"/>
+    <image id="n43_flal" name="n43" src="flaly" fileName="images/h4.png" xy="805,646" size="74,142"/>
+    <image id="n44_flal" name="n44" src="flalz" fileName="images/h5.png" xy="855,696" size="74,142"/>
+    <image id="n45_flal" name="n45" src="flal10" fileName="images/h6.png" xy="905,746" size="74,142"/>
+    <image id="n46_flal" name="n46" src="flal11" fileName="images/h7.png" xy="955,796" size="74,142"/>
+    <image id="n47_flal" name="n47" src="flal12" fileName="images/h8.png" xy="1005,846" size="74,142"/>
+    <image id="n48_flal" name="n48" src="flal13" fileName="images/h9.png" xy="1055,896" size="74,142"/>
+    <image id="n49_flal" name="n49" src="flal14" fileName="images/hA.png" xy="1105,946" size="74,142"/>
+    <image id="n50_flal" name="n50" src="flal15" fileName="images/hJ.png" xy="1155,996" size="74,142"/>
+    <image id="n51_flal" name="n51" src="flal16" fileName="images/hK.png" xy="1205,1046" size="74,142"/>
+    <image id="n52_flal" name="n52" src="flal17" fileName="images/hQ.png" xy="1255,1096" size="74,142"/>
+    <image id="n53_flal" name="n53" src="flal18" fileName="images/hT.png" xy="1305,1146" size="74,142"/>
+    <image id="n54_flal" name="n54" src="flal19" fileName="images/j1.png" xy="1338,1173" size="107,189"/>
+    <image id="n55_flal" name="n55" src="flal1a" fileName="images/j2.png" xy="1388,1223" size="107,189"/>
+    <image id="n56_flal" name="n56" src="flal1b" fileName="images/m2.png" xy="1455,1296" size="74,142"/>
+    <image id="n57_flal" name="n57" src="flal1c" fileName="images/m3.png" xy="1505,1346" size="74,142"/>
+    <image id="n58_flal" name="n58" src="flal1d" fileName="images/m4.png" xy="1555,1396" size="74,142"/>
+    <image id="n59_flal" name="n59" src="flal1e" fileName="images/m5.png" xy="1605,1446" size="74,142"/>
+    <image id="n60_flal" name="n60" src="flal1f" fileName="images/m6.png" xy="1655,1496" size="74,142"/>
+    <image id="n61_flal" name="n61" src="flal1g" fileName="images/m7.png" xy="1705,1546" size="74,142"/>
+    <image id="n62_flal" name="n62" src="flal1h" fileName="images/m8.png" xy="1755,1596" size="74,142"/>
+    <image id="n63_flal" name="n63" src="flal1i" fileName="images/m9.png" xy="1805,1646" size="74,142"/>
+    <image id="n64_flal" name="n64" src="flal1j" fileName="images/mA.png" xy="1855,1696" size="74,142"/>
+    <image id="n65_flal" name="n65" src="flal1k" fileName="images/mJ.png" xy="1905,1746" size="74,142"/>
+    <image id="n66_flal" name="n66" src="flal1l" fileName="images/mK.png" xy="1955,1796" size="74,142"/>
+    <image id="n67_flal" name="n67" src="flal1m" fileName="images/mQ.png" xy="2005,1846" size="74,142"/>
+    <image id="n68_flal" name="n68" src="flal1n" fileName="images/mT.png" xy="2055,1896" size="74,142"/>
+    <movieclip id="n69_flal" name="n69" src="h8rrb" fileName="images/quan.jta" xy="2086,1942" size="112,150"/>
+    <image id="n70_flal" name="n70" src="vw5ie" fileName="images/titleBg.png" xy="2022,2015" size="340,105"/>
+    <image id="n71_flal" name="n71" src="flal1o" fileName="images/xpaibei_1.png" xy="2205,2046" size="74,142"/>
+    <image id="n72_flal" name="n72" src="flal1p" fileName="images/xpaibei_2.png" xy="2255,2096" size="74,142"/>
+    <image id="n73_flal" name="n73" src="flal1q" fileName="images/xpaibei_3.png" xy="2305,2146" size="74,142"/>
+    <image id="n74_flal" name="n74" src="flal1r" fileName="images/xpaibei_4.png" xy="2355,2196" size="74,142"/>
+    <image id="n75_flal" name="n75" src="flal1s" fileName="images/xx.png" xy="2405,2246" size="74,142"/>
+    <image id="n76_flal" name="n76" src="flal27" fileName="images/win_effect_0.png" xy="430,142"/>
+    <image id="n77_flal" name="n77" src="flal28" fileName="images/win_effect_1.png" xy="484,234"/>
+    <image id="n78_flal" name="n78" src="flal29" fileName="images/win_effect_2.png" xy="530,242"/>
+    <image id="n79_flal" name="n79" src="flal26" fileName="images/TXxinxiK.png" xy="200,433"/>
+    <image id="n80_flal" name="n80" src="flal2a" fileName="images/zbg.png" xy="243,414"/>
+    <image id="n81_flal" name="n81" src="flal2g" fileName="images/chip0.png" xy="225,265"/>
+    <image id="n82_flal" name="n82" src="flal2h" fileName="images/chip1.png" xy="274,315"/>
+    <image id="n83_flal" name="n83" src="flal2i" fileName="images/chip2.png" xy="325,365"/>
+    <image id="n84_flal" name="n84" src="flal2j" fileName="images/chip3.png" xy="374,414"/>
+    <image id="n85_flal" name="n85" src="flal2k" fileName="images/chip4.png" xy="425,465"/>
+    <image id="n86_flal" name="n86" src="flal2b" fileName="images/btn_choumabg.png" xy="224,362"/>
+    <image id="n87_flal" name="n87" src="flal2c" fileName="images/btn_likai.png" xy="294,425"/>
+    <image id="n88_flal" name="n88" src="flal2d" fileName="images/btn_tanchu.png" xy="344,475"/>
+    <image id="n89_flal" name="n89" src="flal2e" fileName="images/btn_zoushi.png" xy="397,536"/>
+    <image id="n90_flal" name="n90" src="flal2l" fileName="images/dikuang.png" xy="-59,502"/>
+    <image id="n91_flal" name="n91" src="flal2m" fileName="images/jbc_little_frame.png" xy="452,-34"/>
+    <image id="n92_flal" name="n92" src="flal2n" fileName="images/listBg.png" xy="282,12"/>
+    <image id="n93_flal" name="n93" src="flal2p" fileName="images/bg7.png" xy="165,0"/>
+    <image id="n94_flal" name="n94" src="flal2o" fileName="images/bg5.png" xy="295,-128"/>
+    <image id="n95_flal" name="n95" src="flal2s" fileName="images/club_cj_btn_num.png" xy="476,171"/>
+    <image id="n96_flal" name="n96" src="flal2t" fileName="images/club_cj_num_bg.png" xy="556,229"/>
+    <image id="n97_flal" name="n97" src="flal2r" fileName="images/club_cj_btn_create.png" xy="798,316"/>
+    <image id="n98_flal" name="n98" src="flal2q" fileName="images/club_cj_bg_2.png" xy="548,331"/>
+    <image id="n99_flal" name="n99" src="flal2u" fileName="images/club_game_kefu.png" xy="18,24"/>
+    <image id="n100_flal" name="n100" src="flal2v" fileName="images/club_game_icon_100.png" xy="19,-40" size="196,265"/>
+    <image id="n101_flal" name="n101" src="flal2w" fileName="images/club_game_icon_104_1.png" xy="69,10" size="196,265"/>
+    <image id="n102_flal" name="n102" src="flal2x" fileName="images/club_game_icon_104_2.png" xy="119,60" size="196,265"/>
+    <image id="n103_flal" name="n103" src="flal2y" fileName="images/club_game_icon_104_3.png" xy="169,110" size="196,265"/>
+    <image id="n104_flal" name="n104" src="flal2z" fileName="images/club_game_icon_105.png" xy="219,160" size="196,265"/>
+    <image id="n105_flal" name="n105" src="flal30" fileName="images/club_game_icon_106.png" xy="269,210" size="196,265"/>
+    <image id="n106_flal" name="n106" src="flal31" fileName="images/club_game_icon_110.png" xy="319,260" size="196,265"/>
+    <image id="n107_flal" name="n107" src="flal32" fileName="images/club_game_icon_112.png" xy="369,310" size="196,265"/>
+    <image id="n108_flal" name="n108" src="flal33" fileName="images/club_game_icon_200.png" xy="419,360" size="196,265"/>
+    <image id="n109_flal" name="n109" src="flal34" fileName="images/club_game_icon_201.png" xy="469,410" size="196,265"/>
+    <image id="n110_flal" name="n110" src="flal35" fileName="images/club_game_icon_201_2.png" xy="519,460" size="196,265"/>
+    <image id="n111_flal" name="n111" src="flal36" fileName="images/club_game_icon_202.png" xy="569,510" size="196,265"/>
+    <image id="n112_flal" name="n112" src="flal37" fileName="images/club_game_icon_633.png" xy="619,560" size="196,265"/>
+    <image id="n113_flal" name="n113" src="flal38" fileName="images/club_game_icon_650.png" xy="669,610" size="196,265"/>
+    <image id="n114_flal" name="n114" src="flal2u" fileName="images/club_game_kefu.png" xy="373,587" size="888,410"/>
+    <image id="n115_flal" name="n115" src="flal39" fileName="images/club_main_game_icon.png" xy="769,710" size="196,265"/>
+    <image id="n116_flal" name="n116" src="flal3a" fileName="images/table_10.png" xy="350,47"/>
+    <image id="n117_flal" name="n117" src="flal3b" fileName="images/table_2_5.png" xy="563,158"/>
+    <image id="n118_flal" name="n118" src="flal3c" fileName="images/table_2_6.png" xy="613,208"/>
+    <image id="n119_flal" name="n119" src="flal3d" fileName="images/table_2_7.png" xy="663,258"/>
+    <image id="n120_flal" name="n120" src="flal3e" fileName="images/table_2_8.png" xy="713,308"/>
+    <image id="n121_flal" name="n121" src="flal3f" fileName="images/table_2_9.png" xy="763,358"/>
+    <image id="n122_flal" name="n122" src="flal3g" fileName="images/table_8.png" xy="664,349"/>
   </displayList>
 </component>

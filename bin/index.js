@@ -8,7 +8,7 @@
 window.screenOrientation = "sensor_landscape";
 
 //-----libs-begin-----
-loadLib("libs/webp.js");
+// loadLib("libs/webp.js");
 loadLib("libs/libwebp-0.6.0.min.js")
 loadLib("libs/laya.core.js")
 loadLib("libs/laya.ui.js")

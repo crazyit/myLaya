@@ -1,5 +1,6 @@
 {
   "libview.firstColumnWidth": 283,
+  "test.device": "iPhone Xs Max",
   "libview.iconScale": 0,
   "backgroundColor": 6710886,
   "auxline1": true,
@@ -18,6 +19,7 @@
     "ui://3cvazr8pmmu21"
   ],
   "snapToGrid": true,
+  "test.orientation": "landscape",
   "gridColor": 80,
   "libview.currentGroup": "",
   "gridSize": 30
