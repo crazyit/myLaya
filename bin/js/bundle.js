@@ -8,15 +8,12 @@
         var test;
         (function (test) {
             class TestSceneUI extends Scene {
-                constructor() {
-                    super();
-                }
+                constructor() { super(); }
                 createChildren() {
                     super.createChildren();
-                    this.createView(TestSceneUI.uiView);
+                    this.loadScene("test/TestScene");
                 }
             }
-            TestSceneUI.uiView = { "type": "Scene", "props": { "width": 640, "runtime": "script/GameUI.ts", "name": "gameBox", "height": 1136 }, "compId": 1, "child": [{ "type": "Sprite", "props": { "y": 1116, "x": -83, "width": 805, "texture": "test/block.png", "name": "ground", "height": 20 }, "compId": 3, "child": [{ "type": "Script", "props": { "y": 0, "x": 0, "width": 805, "label": "ground", "height": 20, "runtime": "laya.physics.BoxCollider" }, "compId": 5 }, { "type": "Script", "props": { "type": "static", "runtime": "laya.physics.RigidBody" }, "compId": 6 }] }, { "type": "Sprite", "props": { "y": 0, "x": 0, "name": "gameBox" }, "compId": 18 }, { "type": "Sprite", "props": { "y": 0, "x": 0, "name": "UI" }, "compId": 14, "child": [{ "type": "Label", "props": { "y": 50, "x": 158, "width": 272, "var": "scoreLbl", "height": 47, "fontSize": 40, "color": "#51c524", "align": "center" }, "compId": 17 }, { "type": "Label", "props": { "y": 0, "x": 0, "width": 640, "var": "tipLbll", "valign": "middle", "text": "别让箱子掉下来\\n\\n点击屏幕开始游戏", "height": 1136, "fontSize": 40, "color": "#c6302e", "align": "center" }, "compId": 16 }] }, { "type": "Script", "props": { "enabled": true, "dropBox": "@Prefab:prefab/DropBox.prefab", "bullet": "@Prefab:prefab/Bullet.prefab", "runtime": "script/GameControl.ts" }, "compId": 20 }], "loadList": ["test/block.png", "prefab/DropBox.prefab", "prefab/Bullet.prefab"], "loadList3D": [] };
             test.TestSceneUI = TestSceneUI;
             REG("ui.test.TestSceneUI", TestSceneUI);
         })(test = ui.test || (ui.test = {}));
@@ -303,8 +300,11 @@
             }
             initView() {
                 let bg = this.getChild("bg").asImage;
-                bg.scaleX = 0.1;
                 console.log("initView.......");
+                let loader = new fgui.GLoader();
+                loader.url = "res/webp/s10100_19_260.webp";
+                this.getParent().addChild(loader);
+                console.log("initView");
             }
             registerEvent() {
                 console.log("loginView registerEvent");
@@ -388,7 +388,7 @@
                 }).finish();
                 var message = this.mMessage.decode(buffer);
                 console.log("message = " + message + "" + JSON.stringify(message));
-                this.connectByUrl("ws://127.0.0.1:8080");
+                this.connectByUrl("ws://192.168.3.3:8080");
             }
             connectByUrl(url) {
                 Log.info("connectByUrl");
@@ -402,16 +402,19 @@
             }
             onSocketOpen() {
                 console.log("Connected");
-                this.output;
+                this.socket.endian = Laya.Byte.LITTLE_ENDIAN;
                 let msgHead = 10001;
                 this.output.writeUint16(msgHead);
                 this.mMessage = this.mRoot.lookup("awesomepackage.C2R_Login");
                 console.log("this.mMessage--->>" + this.mMessage);
-                let message = this.mMessage.create({ rpcId: 1, account: "test", password: "111111" });
+                let message = this.mMessage.create({ rpcId: 11, Account: "test", Password: "111111" });
                 var errMsg = this.mMessage.verify(message);
                 if (errMsg)
                     throw Error(errMsg);
                 var buffer = this.mMessage.encode(message).finish();
+                this.output.writeArrayBuffer(buffer);
+                let decodeMsg = this.mMessage.decode(buffer);
+                console.log("decodeMsg = " + message + " = " + JSON.stringify(message));
                 this.socket.flush();
                 console.log("消息发送完成");
             }
@@ -425,6 +428,14 @@
                 }
                 else if (message instanceof ArrayBuffer) {
                     console.log(new Byte(message).readUTFBytes());
+                    var bytes = new Laya.Byte(message);
+                    while (bytes.length > bytes.pos) {
+                        let opCode = bytes.getUint16();
+                        let pbContent = bytes.getUint8Array(bytes.pos, bytes.length);
+                        let l = this.mRoot.lookupType("awesomepackage.S2C_" + opCode);
+                        let msg = l.decode(pbContent);
+                        console.log("MessageReveived opCode=" + opCode + "msg=" + JSON.stringify(msg));
+                    }
                 }
                 this.socket.input.clear();
             }
@@ -469,6 +480,16 @@
             console.log("test protocolBuffer");
             net.NetWork.getInstance();
             Log.info("Laya.Browser.clientWidth=" + Laya.Browser.clientWidth + "Laya.Browser.clientHeight=" + Laya.Browser.clientHeight);
+            console.log("checkWebpSupport = " + this.checkWebpSupport());
+        }
+        checkWebpSupport() {
+            var canvas = Laya.Browser.window.document.createElement('canvas');
+            canvas.width = 2;
+            canvas.height = 2;
+            canvas.style.width = 2 + "px";
+            canvas.style.height = 2 + "px";
+            var isSupport = !![].map && canvas.toDataURL('image/webp').indexOf('data:image/webp') == 0;
+            return isSupport;
         }
     }
     new Main();

@@ -51,8 +51,19 @@ class Main {
 		net.NetWork.getInstance();
 
 		Log.info("Laya.Browser.clientWidth="+Laya.Browser.clientWidth+"Laya.Browser.clientHeight="+Laya.Browser.clientHeight);
+		console.log("checkWebpSupport = "+this.checkWebpSupport());
 
 	}
+	checkWebpSupport():boolean{
+		var canvas:any = Laya.Browser.window.document.createElement('canvas');
+		canvas.width = 2;
+		canvas.height = 2;
+		canvas.style.width = 2 + "px";
+		canvas.style.height = 2 + "px";
+		var isSupport = !![].map && canvas.toDataURL('image/webp').indexOf('data:image/webp') == 0;	
+		return isSupport;
+	}
+	
 }
 //激活启动类
 new Main();

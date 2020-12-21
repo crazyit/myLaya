@@ -8,9 +8,12 @@
 window.screenOrientation = "sensor_landscape";
 
 //-----libs-begin-----
+// loadLib("libs/webp.js");
+loadLib("libs/libwebp-0.6.0.min.js")
 loadLib("libs/laya.core.js")
 loadLib("libs/laya.ui.js")
 loadLib("libs/laya.physics.js")
+loadLib("libs/laya.ani.js")
 //-----libs-end-------
 loadLib("libs/rawinflate.min.js");// 如果勾选了不压缩，这个库不需要
 loadLib("libs/fairygui.js");// 只依赖laya.core,laya.html两个模块

@@ -18642,11 +18642,105 @@ window.Laya= (function (exports) {
             }
             else {
                 var ext = Utils.getFileExtension(url);
+                console.log("ext="+ext+"url="+url);
                 if (ext === "ktx" || ext === "pvr")
                     this._loadHttpRequest(url, Loader.BUFFER, this, this.onLoaded, this, this.onProgress, this, this.onError);
+                else if(ext === "webp"){
+                    this._check_webp_feature('lossy', (f,r)=>{
+                        console.log("_check_webp_feature",f,r);
+                        // if(r){
+                        //     this._loadHtmlImage(url, this, this.onLoaded, this, onError);
+                        // }else{
+                            // this._loadTextureXR(url,this,this.onLoaded,this,onError);
+                            this._loadTextureWebpjsWASM(url,this,this.onLoaded,this,onError);
+                        // }
+                    })
+                }
                 else
                     this._loadHtmlImage(url, this, this.onLoaded, this, onError);
             }
+        }
+        // check_webp_feature:
+        //   'feature' can be one of 'lossy', 'lossless', 'alpha' or 'animation'.
+        //   'callback(feature, result)' will be passed back the detection result (in an asynchronous way!)
+        _check_webp_feature(feature, callback) {
+            var kTestImages = {
+                lossy: "UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA",
+                lossless: "UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==",
+                alpha: "UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA==",
+                animation: "UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA"
+            };
+            var img = new Browser.window.Image();
+            img.onload = function () {
+                var result = (img.width > 0) && (img.height > 0);
+                callback(feature, result);
+            };
+            img.onerror = function () {
+                callback(feature, false);
+            };
+            img.src = "data:image/webp;base64," + kTestImages[feature];
+        }
+        _loadTextureXR (url, onLoadCaller, onLoad, onErrorCaller, onError) {
+            var request = new XMLHttpRequest;
+            var this1 = this;
+            request.open("get", url, true);
+            request.responseType = "arraybuffer";
+            var width=[0];
+            var height=[0];
+
+            function clear() {
+                // var img = image;
+                // img.onload = null;
+                // img.onerror = null;
+                // delete Loader._imgCache[url];
+            }
+
+            var onerror = function () {
+                clear();
+                onError.call(onErrorCaller);
+            };
+
+            request.onload = (function(event) {
+                var response= new Uint8Array(request.response);
+                var webpdecoder= new WebPDecoder();
+                var rgba= webpdecoder.WebPDecodeRGBA(response,12,response.length-12,width,height);
+                var canvas= document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                var imagedata = ctx.createImageData(width[0], height[0]);
+                imagedata.data.set(rgba);
+                clear();
+                onLoad.call(onLoadCaller, imagedata);
+            });
+            request.onerror = function (e) {
+                onError.call(onLoadCaller, e);
+            };
+            request.send();
+        }
+        _loadTextureWebpjsWASM (url, onLoadCaller, onLoad, onErrorCaller, onError) {
+            var request = new XMLHttpRequest;
+            var this1 = this;
+            request.open("get", url, true);
+            request.responseType = "arraybuffer";
+            request.onload = (function(event) {
+                var WebpToCanvas = Module.cwrap('WebpToSDL', 'number', ['array', 'number']);
+                var time=Date.now();
+                var response=new Uint8Array(request.response);
+                
+                var canvas= document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                
+                Module.canvas = canvas;
+                
+                var ret = WebpToCanvas(response, response.length);
+                time=Date.now()-time;
+                trace("webpjs decode time:"+time+"ms wh:"+canvas.width+","+canvas.height);
+                onLoad.call(onLoadCaller, canvas);
+                
+            });
+            request.onerror = function (e) {
+                onError.call(onLoadCaller, e);
+            };
+            request.send();
         }
         _loadSound(url) {
             var sound = (new SoundManager._soundClass());

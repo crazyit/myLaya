@@ -1,0 +1,21 @@
+// awesome.proto
+package awesomepackage;
+syntax = "proto3";
+
+message AwesomeMessage {
+    string awesome_field = 1; // becomes awesomeField
+}
+message C2R_Login // IRequest
+{
+  int32 rpcId = 90;
+  string  Account   = 1;  // 帐号
+  string  Password = 2;  // 密码
+}
+message S2C_10002 // IRequest
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+	string Address = 1;
+	int64 Key	    = 2;
+}
